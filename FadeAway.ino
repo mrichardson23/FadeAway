@@ -36,6 +36,7 @@ void loop()
    yPos = yPos + letterHeight + 5;
    xPos = xLowBoundary;
    updatePosition();
+   delay(100);
    
   }
   
@@ -43,6 +44,7 @@ void loop()
     yPos = yLowBoundary;
     xPos = xLowBoundary; 
     updatePosition();
+    delay(100);
   }
   
   if (Serial.available())
@@ -239,7 +241,7 @@ void loop()
       drawHash();
       drawSpace();
       break;
-    case '@';
+    case '@':
       drawAtSign();
       drawSpace();
       break;
@@ -572,7 +574,7 @@ void drawExclamationPoint() {
 void drawDash() {
  moveOff(0, letterHeight/2);
  moveOn(letterWidth, 0);
- moveOff(0, letterWidth/-2); 
+ moveOff(0, letterHeight/-2); 
   
 }
 
@@ -609,7 +611,7 @@ void drawHash() {
   moveOn(letterWidth*-1, 0);
   moveOff(0, letterHeight/2);
   moveOn(letterWidth, 0);
-  moveOff(0, letterHeight/-4);
+  moveOff(0, (letterHeight/-4)*3);
 }
 
 void drawAtSign() {
@@ -638,7 +640,7 @@ void drawTwo() {
   moveOn(letterWidth*-1, 0);
   moveOn(0, letterHeight/2);
   moveOn(letterWidth, 0);
-  moveOff(0, letterHeight);
+  moveOff(0, letterHeight*-1);
 }
 
 void drawThree() {
@@ -670,7 +672,7 @@ void drawSix() {
 void drawSeven() {
   moveOn(letterWidth, 0);
   moveOn(letterWidth/-2, letterHeight);
-  moveOff(letterWidth/2, letterWidth*-1);
+  moveOff(letterWidth/2, letterHeight*-1);
 }
 
 void drawEight() {
@@ -708,13 +710,13 @@ void moveOff (int xGo, int yGo) {
   yPos = yPos + yGo;
   x.writeMicroseconds(xPos);
   y.writeMicroseconds(yPos);
-  delay(150);
+  delay(75);
 }
 
 void updatePosition() {
   x.writeMicroseconds(xPos);
   y.writeMicroseconds(yPos);
-  delay(150);
+  delay(75);
 }
 
 
