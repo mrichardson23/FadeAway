@@ -19,6 +19,8 @@ int laserPin = 7;
 int xServoPin = 9;
 int yServoPin = 10;
 
+String tweet = "";
+
 void setup() 
 { 
   pinMode(laserPin, OUTPUT);
@@ -26,30 +28,47 @@ void setup()
   y.attach(yServoPin);
   x.writeMicroseconds(xPos);
   y.writeMicroseconds(yPos);
-  Serial.begin(9600);
+  Serial.begin(115200);
+  delay(2000);
 } 
 
 
 void loop() 
-{ 
-  if (xPos + letterWidth > xHighBoundary) { //character line wrap
-   yPos = yPos + letterHeight + 5;
-   xPos = xLowBoundary;
-   updatePosition();
-   delay(100);
-   
-  }
-  
-  if (yPos +letterHeight > yHighBoundary) { //panel wrap
-    yPos = yLowBoundary;
-    xPos = xLowBoundary; 
-    updatePosition();
-    delay(100);
-  }
-  
-  if (Serial.available())
   {
-    char c = Serial.read();
+  Serial.println("http://nosdrahcir.com/twittersearch/");
+  while(!Serial.available()) {}
+   do {
+    tweet += char(Serial.read());
+    delay(1);
+   } while (Serial.available());
+   if ((tweet[tweet.length() - 1] != 23))
+   {
+     Serial.println("http://nosdrahcir.com/twittersearch/");
+     while(!Serial.available()) {}
+     do {
+       tweet += char(Serial.read());
+       delay(1);
+     } while(Serial.available());
+   }
+   
+   if ((tweet[tweet.length() -1] != 23))
+   {
+     Serial.println("http://nosdrahcir.com/twittersearch/");
+     while(!Serial.available()) {}
+     do {
+       tweet += char(Serial.read());
+       delay(1);
+     } while(Serial.available());
+   }
+   
+  
+  
+  //tweet = "This is just a sample tweet of a few characters that should be stepped through";
+  // Only proceed when the tweet is complete:
+  
+  for (int i = 0; i < tweet.length(); i++)
+  {
+    char c = tweet.charAt(i);
     switch (c) {
     case 'a':
     case 'A':
@@ -285,11 +304,24 @@ void loop()
       drawO();
       drawSpace();
       break;
+    } // end switch case
+     if (xPos + letterWidth > xHighBoundary) { //character line wrap
+       yPos = yPos + letterHeight + 5;
+       xPos = xLowBoundary;
+       updatePosition();
+       delay(100);
     }
-  }
-
-
-} 
+  
+    if (yPos +letterHeight > yHighBoundary) { //panel wrap
+      yPos = yLowBoundary;
+      xPos = xLowBoundary; 
+      updatePosition();
+      delay(100);
+    }
+  } // end looping through string for chars.
+  tweet = "";
+  delay(20000);
+} // End main loop
 
 void drawA() {
   moveOff(0, letterHeight);
@@ -701,7 +733,7 @@ void moveOn (int xGo, int yGo) {
   yPos = yPos + yGo;
   x.writeMicroseconds(xPos);
   y.writeMicroseconds(yPos);
-  delay(150);
+  delay(75);
   digitalWrite(laserPin, LOW);
 }
 
