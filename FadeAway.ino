@@ -1,7 +1,14 @@
-#include <Servo.h> 
+#include <Servo.h>
+#include <SPI.h>
+#include <Ethernet.h>
 
 Servo x;
 Servo y;
+
+byte mac[] = {  0x00, 0xAA, 0xBB, 0xCC, 0xDE, 0x02 };
+char serverName[] = "nosdrahcir.com";
+
+EthernetClient client;
 
 int letterHeight = 20; //for best results, should be divisible by four
 int letterWidth = 10;  //for best results, should be divisible by four
@@ -23,6 +30,11 @@ String tweet = "";
 
 void setup() 
 { 
+  if (Ethernet.begin(mac) == 0) {
+    Serial.println("Failed to configure Ethernet using DHCP");
+    // no point in carrying on, so do nothing forevermore:
+    while(true);
+  }
   pinMode(laserPin, OUTPUT);
   x.attach(xServoPin); 
   y.attach(yServoPin);
@@ -33,34 +45,24 @@ void setup()
 } 
 
 
-void loop() 
-  {
-  Serial.println("http://nosdrahcir.com/twittersearch/");
-  while(!Serial.available()) {}
-   do {
-    tweet += char(Serial.read());
-    delay(1);
-   } while (Serial.available());
-   if ((tweet[tweet.length() - 1] != 23))
-   {
-     Serial.println("http://nosdrahcir.com/twittersearch/");
-     while(!Serial.available()) {}
-     do {
-       tweet += char(Serial.read());
-       delay(1);
-     } while(Serial.available());
-   }
-   
-   if ((tweet[tweet.length() -1] != 23))
-   {
-     Serial.println("http://nosdrahcir.com/twittersearch/");
-     while(!Serial.available()) {}
-     do {
-       tweet += char(Serial.read());
-       delay(1);
-     } while(Serial.available());
-   }
-   
+void loop() {
+  Serial.println("connecting...");
+  if (client.connect(serverName, 80)) {
+    Serial.println("connected");
+    // Make a HTTP request:
+    client.println("GET /~nosdrahc/twittersearch/ethernet.php");
+    client.println();
+    delay(1000);
+     else {
+      // if you didn't get a connection to the server:
+      Serial.println("connection failed");
+    }
+    
+    while(client.available()) {
+      tweet += char(client.read());
+    }
+     client.stop();
+  
   
   
   //tweet = "This is just a sample tweet of a few characters that should be stepped through";
