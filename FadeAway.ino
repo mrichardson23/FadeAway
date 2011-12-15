@@ -5,7 +5,7 @@
 Servo x;
 Servo y;
 
-byte mac[] = {  0x00, 0xAA, 0xBB, 0xCC, 0xDE, 0x02 };
+byte mac[] = {  0x3C, 0x07, 0x54, 0x1D, 0x3F, 0xD4 };
 char serverName[] = "nosdrahcir.com";
 
 EthernetClient client;
@@ -24,24 +24,28 @@ int yPos = yLowBoundary;
 
 int laserPin = 7;
 int xServoPin = 9;
-int yServoPin = 10;
+int yServoPin = 6;
 
 String tweet = "";
 
 void setup() 
 { 
-  if (Ethernet.begin(mac) == 0) {
-    Serial.println("Failed to configure Ethernet using DHCP");
-    // no point in carrying on, so do nothing forevermore:
-    while(true);
-  }
-  pinMode(laserPin, OUTPUT);
+  
+    pinMode(laserPin, OUTPUT);
   x.attach(xServoPin); 
   y.attach(yServoPin);
   x.writeMicroseconds(xPos);
   y.writeMicroseconds(yPos);
   Serial.begin(115200);
   delay(2000);
+  Serial.println("About to get DHCP");
+  if (Ethernet.begin(mac) == 0) {
+    Serial.println("Failed to configure Ethernet using DHCP");
+    // no point in carrying on, so do nothing forevermore:
+    while(true);
+  }
+  Serial.println("Got DHCP.");
+
 } 
 
 
@@ -53,6 +57,7 @@ void loop() {
     client.println("GET /~nosdrahc/twittersearch/ethernet.php");
     client.println();
     delay(1000);
+  }
      else {
       // if you didn't get a connection to the server:
       Serial.println("connection failed");
