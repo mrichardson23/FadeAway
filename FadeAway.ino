@@ -6,23 +6,24 @@ Servo y;
 int letterHeight = 20; //for best results, should be divisible by four
 int letterWidth = 10;  //for best results, should be divisible by four
 
-int xLowBoundary = 1295;
-int yLowBoundary = 1410;
+int xLowBoundary = 1340;
+int yLowBoundary = 1450;
 
-int xHighBoundary = 1810;
-int yHighBoundary = 1830;
+int xHighBoundary = 1805;
+int yHighBoundary = 1865;
 
 int xPos = xLowBoundary;
 int yPos = yLowBoundary;
 
 int laserPin = 7;
 int xServoPin = 9;
-int yServoPin = 10;
+int yServoPin = 6;
 
-String tweet = "";
+String tweets[10];
 
 void setup() 
 { 
+  randomSeed(analogRead(0));
   pinMode(laserPin, OUTPUT);
   x.attach(xServoPin); 
   y.attach(yServoPin);
@@ -30,40 +31,23 @@ void setup()
   y.writeMicroseconds(yPos);
   Serial.begin(115200);
   delay(2000);
+  tweets[0] = "There are many things I used to forget but just one thing never fade away in my heart is you.";
+  tweets[1] = "We'll never fade away.";
+  tweets[2] = "People fade away in your life. That's reality. I'm starting to experience that now.";
+  tweets[3] = "broken hearts they never fade away and broken hearts are here to stay.";
+  tweets[4] = "RT @KurtCobain: It's better to burn out than fade away.";
+  tweets[5] = "All my hoes got jordan skill they fade away";
+  tweets[6] = "but all the things that you've seen , will slowly fade away";
+  tweets[7] = "She tried to get me unfocus so I had to fade away";
+  tweets[8] = "RT @GlobalGrind: Rise & Grind! Never mind what haters say, ignore them 'til they fade away.";
+  tweets[9] = "Sometimes, first scars won't ever fade away.";
 } 
 
 
 void loop() 
   {
-  Serial.println("http://nosdrahcir.com/twittersearch/");
-  while(!Serial.available()) {}
-   do {
-    tweet += char(Serial.read());
-    delay(1);
-   } while (Serial.available());
-   if ((tweet[tweet.length() - 1] != 23))
-   {
-     Serial.println("http://nosdrahcir.com/twittersearch/");
-     while(!Serial.available()) {}
-     do {
-       tweet += char(Serial.read());
-       delay(1);
-     } while(Serial.available());
-   }
    
-   if ((tweet[tweet.length() -1] != 23))
-   {
-     Serial.println("http://nosdrahcir.com/twittersearch/");
-     while(!Serial.available()) {}
-     do {
-       tweet += char(Serial.read());
-       delay(1);
-     } while(Serial.available());
-   }
-   
-  
-  
-  //tweet = "This is just a sample tweet of a few characters that should be stepped through";
+  String tweet = tweets[random(0,9)];
   // Only proceed when the tweet is complete:
   
   for (int i = 0; i < tweet.length(); i++)
@@ -306,7 +290,7 @@ void loop()
       break;
     } // end switch case
      if (xPos + letterWidth > xHighBoundary) { //character line wrap
-       yPos = yPos + letterHeight + 5;
+       yPos = yPos + letterHeight + 7;
        xPos = xLowBoundary;
        updatePosition();
        delay(100);
