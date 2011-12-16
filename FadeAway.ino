@@ -68,7 +68,8 @@ void loop() {
     }
      client.stop();
   
-  
+    Serial.print("Tweet: ");
+    Serial.println(tweet);
   
   //tweet = "This is just a sample tweet of a few characters that should be stepped through";
   // Only proceed when the tweet is complete:
