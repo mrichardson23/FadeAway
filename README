@@ -1,0 +1,7 @@
+Fade Away by Matt Richardson
+For more information about this project, see:
+http://mattatitp.wordpress.com/2011/12/16/fade-away-1/
+
+FadeAway.ino - Arduino sketch
+ethernet.php - Server side code for ethernet shield
+index.php - Server side code for XBee Internet Gateway
